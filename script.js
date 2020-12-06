@@ -14,89 +14,120 @@ let parkingSpaces = 10; // Parking spaces increases maximum amount of customers,
 let buildingUpgrades = 0;
 let customers = 0;
 let addictiveness = 1; // makes you get more money
-    
-    
-function doTime() {
-    hour += 1;
-  if(hour > 24) {
-    hour -= 24;
-    day++;
-  }
-  if(day > 30) {
-    day -= 30;
-    month++;
-  }
-  if(month > 12) {
-    month -= 12;
-    year++;
-  }
-  // document.getElementById("timerrr").innerHTML = "Date: " + year + "/" + month + "/" + day + " " + hour + ":00";
-  if(money < -10000) {
-    alert("You lost the game. If you want, you can keep playing but it's probably a better idea to start over or load your latest save file.")
-  }
-  advertisement = 1 + 50 * billboards + 2 * spammers + 10 * internetPresence;
+
+function setintervals() {
+    setInterval(doTime, 500);
+    setInterval(() => {
+        printme("Hello");
+    }, 1000);
 }
 
-setInterval(doTime(), 500);
-setInterval(jobUpkeep(), 360000);
-setInterval(getMoney(), 6000);
+function doTime() {
+    hour += 1;
+    if (hour > 24) {
+        hour -= 24;
+        getMoney();
+        day++;
+    }
+    if (day > 30) {
+        day -= 30;
+        jobUpkeep();
+        month++;
+    }
+    if (month > 12) {
+        month -= 12;
+        year++;
+    }
+
+
+    document.getElementById("timerrr").innerHTML = "Date: " + year + "/" + month + "/" + day + " " + hour + ":00";
+    if (money < -10000) {
+        alert("You lost the game. If you want, you can keep playing but it's probably a better idea to start over or load your latest save file.");
+    }
+    advertisement = 1 + 50 * billboards + 2 * spammers + 10 * internetPresence;
+}
+
+
+function printme(test) {
+    console.log(test);
+}
 
 function buyBillboard() {
     if (money >= 1000000) {
-      money -= 1000000;
-      billboards++;
+        money -= 1000000;
+        billboards++;
     } else {
-      alert("You do not have enough money. You need " + (1000000 - money) + " more.")
+        alert("You do not have enough money. You need " + (1000000 - money) + " more.")
     }
 }
 
 function buySpammer() {
     if (money >= 1000) {
-      money -= 1000;
-      spammers++;
+        money -= 1000;
+        spammers++;
     } else {
-      alert("You do not have enough money. You need " + (1000 - money) + " more.")
+        alert("You do not have enough money. You need " + (1000 - money) + " more.")
     }
 }
 
 function buyPromoter() {
     if (money >= 50000) {
-      money -= 50000;
-      promoters++;
+        money -= 50000;
+        promoters++;
     } else {
-      alert("You do not have enough money. You need " + (50000 - money) + " more.")
+        alert("You do not have enough money. You need " + (50000 - money) + " more.")
     }
 }
 
 function buyParkingSpaces() {
     if (money >= 5000) {
-      money -= 5000;
-      parkingSpaces++;
+        money -= 5000;
+        parkingSpaces++;
     } else {
-      alert("You do not have enough money. You need " + (5000 - money) + " more.")
+        alert("You do not have enough money. You need " + (5000 - money) + " more.")
     }
 }
 
 function upgradeGames() {
     if (money >= (addictiveness ** 3 * 500)) {
-      money -= (addictiveness ** 3 * 500);
-      addictiveness++;
+        money -= (addictiveness ** 3 * 500);
+        addictiveness++;
     } else {
-      alert("You do not have enough money. You need " + (addictiveness ** 3 * 500 - money) + " more.")
+        alert("You do not have enough money. You need " + (addictiveness ** 3 * 500 - money) + " more.")
     }
 }
 
-function getMoney() {
-  paycheck = 2 * parkingSpaces + 10 * addictiveness + 5 * advertisement;
-  money += paycheck;
-  // alert("You got $" + paycheck);
+function getMoney(multiplyer) {
+    paycheck ='';
+    if(multiplyer!= null){
+        paycheck =(2 * parkingSpaces + 10 * addictiveness + 5 * advertisement)*multiplyer;
+    }else{
+        paycheck =(2 * parkingSpaces + 10 * addictiveness + 5 * advertisement);
+    }
+
+    money += paycheck;
+    // alert("You got $" + paycheck);
 }
 
 function jobUpkeep() {
-  money -= (spammers * 100);
-  money -= (promoters * 4000);
+    money -= (spammers * 100);
+    money -= (promoters * 4000);
 }
 
 function goBack() {
-  window.history.back();
+    window.history.back();
+}
+
+function updateLocalStoreValue(valueName, value) {
+    if (typeof (Storage) !== "undefined" && typeof (valueName)=="string") {
+            localStorage.setItem(valueName+'',value);
+    }else{
+        alert("You have no local storage get rekt");
+    }
+}
+
+function getFromLocalStoreValue(valueName){
+    if (typeof (Storage) !== "undefined" && typeof (valueName)=="string") {
+       return localStorage.getItem(valueName);
+    }
 }
